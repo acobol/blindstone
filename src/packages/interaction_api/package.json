@@ -1,0 +1,22 @@
+{
+  "name": "interaction_api",
+  "version": "0.0.1",
+  "description": "Window interaction handler for blindstone project",
+  "main": "index.js",
+  "scripts": {
+    "build": "node-gyp build",
+    "clean": "node-gyp clean",
+    "build:dev": "node-gyp build --debug",
+    "rebuild": "node-gyp rebuild",
+    "rebuild:dev": "node-gyp rebuild --debug",
+    "rebuild:electron": "node-gyp rebuild --target=9.0.2 --arch=x64 --dist-url=--dist-url=https://electronjs.org/headers"
+  },
+  "author": "Andres Marcelo Cobo Laguna",
+  "license": "MIT",
+  "devDependencies": {
+    "node-gyp": "^7.0.0"
+  },
+  "dependencies": {
+    "node-addon-api": "^3.0.0"
+  }
+}
