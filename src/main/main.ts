@@ -1,4 +1,5 @@
 import { app, BrowserWindow, Menu, ipcMain } from "electron";
+import updateGameConfig from "./configHandler";
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 
@@ -28,9 +29,13 @@ const createWindow = async (): Promise<void> => {
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
-
   // Open the DevTools.
   //mainWindow.webContents.openDevTools();
+  try {
+    await updateGameConfig();
+  } catch (error) {
+    console.log("An error ocurred trying to update config file: \n %o", error);
+  }
 };
 
 // This method will be called when Electron has finished
