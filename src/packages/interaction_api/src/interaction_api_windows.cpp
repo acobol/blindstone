@@ -30,8 +30,8 @@ void interactionapi::focusWindow(NativeWindowHandle window) {
     keybd_event(VK_MENU, 0, KEYEVENTF_EXTENDEDKEY | 0, 0);
   }
 
-  SetForegroundWindow(window);
   SetFocus(window);
+  SetForegroundWindow(window);
 
   if (pressed) {
     keybd_event(VK_MENU, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
