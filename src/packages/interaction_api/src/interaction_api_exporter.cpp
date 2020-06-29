@@ -30,8 +30,8 @@ void focusWindow(const Napi::CallbackInfo& info) {
     Napi::TypeError::New(env, "Argument must be of type Buffer")
       .ThrowAsJavaScriptException();
   }
-  Napi::Buffer<void *> handle = info[0].As<Napi::Buffer<void *>>();
-  NativeWindowHandle win = static_cast<NativeWindowHandle>(*reinterpret_cast<void **>(handle.Data()));
+  Napi::Buffer<NativeWindowHandle> handle = info[0].As<Napi::Buffer<NativeWindowHandle>>();
+  NativeWindowHandle win = static_cast<NativeWindowHandle>(reinterpret_cast<NativeWindowHandle>(handle.Data()));
   interactionapi::focusWindow(win);
 }
 
@@ -46,8 +46,8 @@ void moveCursorA(const Napi::CallbackInfo& info) {
     Napi::TypeError::New(env, "Arguments must be of type Buffer, Double, Double")
       .ThrowAsJavaScriptException();
   }
-  Napi::Buffer<void *> handle = info[0].As<Napi::Buffer<void *>>();
-  NativeWindowHandle win = static_cast<NativeWindowHandle>(*reinterpret_cast<void **>(handle.Data()));
+  Napi::Buffer<NativeWindowHandle> handle = info[0].As<Napi::Buffer<NativeWindowHandle>>();
+  NativeWindowHandle win = static_cast<NativeWindowHandle>(reinterpret_cast<NativeWindowHandle>(handle.Data()));
   double x = info[1].As<Napi::Number>().DoubleValue();
   double y = info[2].As<Napi::Number>().DoubleValue();
   interactionapi::moveCursorA(win, x, y);
