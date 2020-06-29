@@ -2,8 +2,21 @@
 #include "interaction_api.h"
 #include "types.h"
 
-Napi::Buffer<void *> getGameWindowHandle(const char* gameWindowHandle) {
-  //TODO implentar
+Napi::Buffer<NativeWindowHandle> getGameWindowHandle(const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+  if (info.Length() != 1) {
+    Napi::TypeError::New(env, "Wrong number of arguments")
+      .ThrowAsJavaScriptException();
+  }
+  if (!info[0].IsString()) {
+    Napi::TypeError::New(env, "Argument must be of type String")
+      .ThrowAsJavaScriptException();
+  }
+
+  std::string gameWindowName = info[0].As<Napi::String>();
+
+  NativeWindowHandle handle = interactionapi::getGameWindowHandle(gameWindowName.c_str());
+  return Napi::Buffer<NativeWindowHandle>::Copy(env, &handle, 1);
 }
 
 void focusWindow(const Napi::CallbackInfo& info) {
@@ -135,6 +148,7 @@ void clickAndDragR(const Napi::CallbackInfo& info) {
 }
 
 Napi::Object exportFunctions(Napi::Env env, Napi::Object exports) {
+  exports.Set("getGameWindowHandle", Napi::Function::New(env, getGameWindowHandle));
   exports.Set("focusWindow", Napi::Function::New(env, focusWindow));
   exports.Set("moveCursorA", Napi::Function::New(env, moveCursorA));
   exports.Set("moveCursorR", Napi::Function::New(env, moveCursorR));

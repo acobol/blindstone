@@ -19,8 +19,8 @@ void mouseRelease() {
   SendInput(1, &Input, sizeof(INPUT));
 }
 
-NativeWindowHandle getGameWindowHandle(const char* gameWindowHandle) {
-  //TODO implentar
+NativeWindowHandle interactionapi::getGameWindowHandle(const char* gameWindowHandle) {
+  return FindWindowA(NULL, gameWindowHandle);
 }
 
 void interactionapi::focusWindow(NativeWindowHandle window) {
