@@ -1,5 +1,6 @@
-import { app, BrowserWindow, Menu, ipcMain } from "electron";
+import { app, BrowserWindow, Menu, ipcMain, Point } from "electron";
 import updateGameConfig from "./configHandler";
+import { getGameWindowHandle, moveCursorR, clickR, focusWindow } from '../packages/interaction_api/interactionapi';
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
@@ -38,6 +39,17 @@ const createWindow = async (): Promise<void> => {
   } catch (error) {
     console.log("An error ocurred trying to update config file: \n %o", error);
   }
+  const gameWindowHandle = getGameWindowHandle('Hearthstone');
+  const appHandle = mainWindow.getNativeWindowHandle();
+
+  ipcMain.on("Focus", (event, data: Point) => {
+    moveCursorR(gameWindowHandle, data.x, data.y);
+  });
+  ipcMain.on("Click", (event, data: Point) => {
+    focusWindow(gameWindowHandle);
+    clickR(gameWindowHandle, data.x, data.y);
+    focusWindow(appHandle);
+  });
 };
 
 // This method will be called when Electron has finished
