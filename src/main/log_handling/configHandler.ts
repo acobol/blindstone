@@ -10,7 +10,20 @@ interface Config {
   [key: string]: ConfigObject;
 }
 
-const REQUIRED_CONFIGS = ["Power"];
+const REQUIRED_CONFIGS = [
+  "Power",
+  "Gameplay",
+  "Rachelle",
+  "LoadingScreen",
+  "FullScreenFX",
+  "Bob",
+  "Ben",
+  "Jay",
+  "Brian",
+  "Cameron",
+  "Derek",
+  "Mike"
+];
 const REQUIRED_VALUES: ConfigObject = {
   LogLevel: "1",
   FilePrinting: "true"

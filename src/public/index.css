@@ -1,7 +1,21 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   margin: auto;
-  max-width: 38rem;
-  padding: 2rem;
+  max-width: 50rem;
   color: white;
+  height: 100vh;
+  width: 100vw;
+}
+
+#app {
+  height: 100%;
+  width: 100%;
+}
+
+.debugConsole {
+  color: lawngreen;
+  font-weight: 500;
+  background-color: rgba(0, 0, 0, 0.4);
+  flex: 1;
+  overflow-y: scroll;
 }

@@ -1,6 +1,16 @@
 import { app, BrowserWindow, Menu, ipcMain, Point } from "electron";
-import updateGameConfig from "./configHandler";
-import { getGameWindowHandle, moveCursorR, clickR, focusWindow } from '../packages/interaction_api/interactionapi';
+import path from "path";
+import updateGameConfig from "./log_handling/configHandler";
+import {
+  getGameWindowHandle,
+  moveCursorR,
+  clickR,
+  focusWindow
+} from "../packages/interaction_api/interactionapi";
+import LogWatcher from "./log_handling/LogWatcher";
+import { FunctionReporter } from "./log_handling/Reporters";
+import { BasicParser } from "./parser/Parsers";
+import os from 'os';
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
@@ -39,8 +49,21 @@ const createWindow = async (): Promise<void> => {
   } catch (error) {
     console.log("An error ocurred trying to update config file: \n %o", error);
   }
-  const gameWindowHandle = getGameWindowHandle('Hearthstone');
+  const gameWindowHandle = getGameWindowHandle("Hearthstone");
   const appHandle = mainWindow.getNativeWindowHandle();
+
+  
+  //TODO add heartstone module entry path find to interaction api
+  const testFile = path.join("C:/Program Files (x86)/Hearthstone/logs", "/Power.log");
+  const sendFn = (line: string): void => {
+    mainWindow.webContents.send("Line", [line]);
+  };
+  const reporter = new FunctionReporter(sendFn);
+  const parser = new BasicParser(os.EOL, reporter);
+
+  const testWatcher = new LogWatcher("Power", testFile, parser);
+
+  testWatcher.start();
 
   ipcMain.on("Focus", (event, data: Point) => {
     moveCursorR(gameWindowHandle, data.x, data.y);
