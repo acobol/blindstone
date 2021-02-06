@@ -1,13 +1,16 @@
-import { Point } from "electron";
+import { IpcRendererEvent, Point, ipcRenderer, contextBridge } from "electron";
+import { Action } from "../sharedTypes/sharedTypes";
 
-/* eslint-disable @typescript-eslint/no-var-requires */
-const {ipcRenderer, contextBridge, Point} = require('electron');
-
-contextBridge.exposeInMainWorld('ipcRenderer', {
+contextBridge.exposeInMainWorld("ipcRenderer", {
   moveFocus: (data: Point) => {
     ipcRenderer.send("Focus", data);
   },
   click: (data: Point) => {
     ipcRenderer.send("Click", data);
+  },
+  listenParse: (callback: (action: Action) => void) => {
+    ipcRenderer.on("Action", (event: IpcRendererEvent, args: Action) => {
+      callback(args);
+    });
   }
 });

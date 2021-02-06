@@ -1,4 +1,5 @@
 import path from "path";
+import os from "os";
 import fs from "fs";
 import readline from "readline";
 
@@ -10,7 +11,20 @@ interface Config {
   [key: string]: ConfigObject;
 }
 
-const REQUIRED_CONFIGS = ["Power"];
+const REQUIRED_CONFIGS = [
+  "Power",
+  "Gameplay",
+  "Rachelle",
+  "LoadingScreen",
+  "FullScreenFX",
+  "Bob",
+  "Ben",
+  "Jay",
+  "Brian",
+  "Cameron",
+  "Derek",
+  "Mike"
+];
 const REQUIRED_VALUES: ConfigObject = {
   LogLevel: "1",
   FilePrinting: "true"
@@ -23,9 +37,16 @@ const DEFAULT_CONFIG_VALUES: ConfigObject = {
   Verbose: "false"
 };
 
-const appLocalDir = process.env.LOCALAPPDATA || "";
+const plattform = os.platform();
+const winLocalData = process.env.LOCALAPPDATA || "";
+const macosLocalData = path.join(os.homedir(), "Library", "Preferences");
+
 const configFilePath = path.join(
-  appLocalDir,
+  plattform === "win32"
+    ? winLocalData
+    : plattform === "darwin"
+    ? macosLocalData
+    : "",
   "Blizzard",
   "Hearthstone",
   "log.config"
@@ -74,6 +95,7 @@ const readConfig = async (): Promise<Config> => {
 };
 
 const updateGameConfig = async (): Promise<void> => {
+  console.log("Updating config");
   const config = await readConfig();
   let modified = false;
   const requiredConfigsProcessed: string[] = [];
@@ -114,6 +136,7 @@ const updateGameConfig = async (): Promise<void> => {
 
     writeStream.close();
   }
+  console.log("Finish updating");
 };
 
 export default updateGameConfig;
